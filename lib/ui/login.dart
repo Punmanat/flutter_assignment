@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget{
+class Login extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return LoginState();
   }
-
 }
 
-class LoginState extends State<Login>{
+class LoginState extends State<Login> {
+  String username;
+  String password;
+
+  final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-  final _formkey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -22,47 +24,64 @@ class LoginState extends State<Login>{
           key: _formkey,
           child: ListView(
             children: <Widget>[
-              Image.asset("resources/cat.jpg", height: 200,),
+              Image.asset(
+                "resources/cat.jpg",
+                height: 200,
+              ),
               Container(
-                margin: EdgeInsets.only(top:20),
+                margin: EdgeInsets.only(top: 20),
                 child: TextFormField(
+                  autofocus: false,
                   decoration: InputDecoration(
-                    icon: Icon(Icons.person),
-                    hintText: "User Id"
-                  ),
-                  validator: (value){
+                      icon: Icon(Icons.person), hintText: "User Id"),
+                  onSaved: (value) {
+                    print(value);
+                    username = value;
+                  },
+                  validator: (value) {
                     //User Id
-                    if(value.isEmpty){
+                    if (value.isEmpty) {
                       return "กรุณาระบุ user or password";
                     }
                   },
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top:20),
+                margin: EdgeInsets.only(top: 20),
                 child: TextFormField(
+                  autofocus: false,
                   decoration: InputDecoration(
-                    icon: Icon(Icons.lock),
-                    hintText: "Password"
-                  ),
+                      icon: Icon(Icons.lock), hintText: "Password"),
                   obscureText: true,
-                  validator: (value){
+                  onSaved: (value) {
+                    password = value;
+                  },
+                  validator: (value) {
                     //password
-                    if(value.isEmpty){
+                    if (value.isEmpty) {
                       return "กรุณาระบุ user or password";
                     }
                   },
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top:20),
+                margin: EdgeInsets.only(top: 20),
                 child: RaisedButton(
                   child: Text("Login"),
-                  onPressed: (){
-                    if(_formkey.currentState.validate()){
-                        Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text("Processing Data")));
-                      }
+                  onPressed: () {
+                    _formkey.currentState.save();
+                    if (_formkey.currentState.validate()) {}
+                    if (username == "admin" && password == "admin") {
+                      Navigator.pushNamed(context, "/home");
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text('user or password ไม่ถูกต้อง'),
+                            );
+                          });
+                    }
                   },
                 ),
               ),
@@ -70,8 +89,12 @@ class LoginState extends State<Login>{
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
-                    child: Text("Register New Account", style: TextStyle(color: Colors.green[400]),),
-                    onPressed: (){
+                    child: Text(
+                      "Register New Account",
+                      style: TextStyle(color: Colors.green[400]),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/register");
                     },
                   ),
                 ],
@@ -82,5 +105,4 @@ class LoginState extends State<Login>{
       ),
     );
   }
-
 }
