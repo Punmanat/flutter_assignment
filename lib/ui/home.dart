@@ -34,7 +34,7 @@ class HomeState extends State<Home>{
           ),
         ),
         appBar: AppBar(
-          title: Text("home"),
+          title: Text("Home"),
           centerTitle: true,
         ),
         body: TabBarView(
