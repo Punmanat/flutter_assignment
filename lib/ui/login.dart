@@ -71,10 +71,8 @@ class LoginState extends State<Login> {
                   child: Text("Login"),
                   onPressed: () {
                     _formkey.currentState.save();
-                    if (_formkey.currentState.validate()) {}
-                    if (username == "admin" && password == "admin") {
-                      Navigator.pushNamed(context, "/home");
-                    } else {
+                    if (!_formkey.currentState.validate()) {}
+                    else {
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -82,6 +80,9 @@ class LoginState extends State<Login> {
                               content: Text('user or password ไม่ถูกต้อง'),
                             );
                           });
+                    }
+                    if (username == "admin" && password == "admin") {
+                      Navigator.pushNamed(context, "/home");
                     }
                   },
                 ),
